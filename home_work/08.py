@@ -2,7 +2,7 @@
 def game():
     global number
     import random
-    num = random.randint(1, 5)
+    num = random.randint(1, 99)
     attempts = 0
     print('Отгадайте число между 1 и 99.')
     while attempts < 5:
