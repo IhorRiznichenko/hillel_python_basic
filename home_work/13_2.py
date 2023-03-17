@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def time_it(func):
     def wrapper(*args, **kwargs):
         start = datetime.now()
