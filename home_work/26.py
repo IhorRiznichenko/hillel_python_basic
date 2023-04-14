@@ -1,5 +1,5 @@
 def simple_generator(start, step):
-    yield start
+
     while True:
         start *= step
         yield start
