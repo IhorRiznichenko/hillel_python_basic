@@ -54,9 +54,19 @@ class Person:
         raise ValueError(f"Недопустимое значение даты: {date}")
 
     def age_calculation(self):
-        delta = (datetime.date.today() - self.day_of_birthday).days // 365
+        today = datetime.date.today()
         if self.day_of_death:
-            delta = (self.day_of_death - self.day_of_birthday).days // 365
+            if (self.day_of_death.month, self.day_of_death.day) < (self.day_of_birthday.month, self.day_of_birthday.day):
+                delta = self.day_of_death.year - self.day_of_birthday.year - 1
+            else:
+                delta = self.day_of_death.year - self.day_of_birthday.year
+        else:
+            if (today.month, today.day) < (self.day_of_birthday.month, self.day_of_birthday.day):
+                delta = today.year - self.day_of_birthday.year - 1
+            else:
+                delta = today.year - self.day_of_birthday.year
+        if delta < 0:
+            delta += 1
         return delta
 
     def create_list(self):
@@ -67,7 +77,9 @@ class Person:
         gender = "мужчина" if "м" in list_xlsx[5] else "женщина"
         birth_date = list_xlsx[3].replace("00:00:00", "")
         death_date = list_xlsx[4].replace("00:00:00", "") if list_xlsx[4] else ""
-        output = f"{list_xlsx[0]} {list_xlsx[1]} {list_xlsx[2]} {list_xlsx[6]} г., {gender}. Родился: {birth_date}"
+        birth_suffix = "ся" if gender == "мужчина" else "ась"
+        death_suffix = "" if gender == "мужчина" else "ла"
+        output = f"{list_xlsx[0]} {list_xlsx[1]} {list_xlsx[2]} {list_xlsx[6]} г., {gender}. Родил{birth_suffix}: {birth_date}"
         if death_date:
-            output += f" Умер: {death_date}"
+            output += f" Умер{death_suffix}: {death_date}"
         return output
